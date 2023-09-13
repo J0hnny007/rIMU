@@ -9,7 +9,7 @@ Learned quite a bit in the process and hope that it will be useful to peeps othe
 
 ## UI
 
-<img src="/Users/j0hnny007/PycharmProjects/rIMU/media/example-screenshot.png" width="375" height="812" alt="example-image"/>
+<img src="media/example-screenshot.png" width="375" height="812" alt="example-image"/>
 
 Example screenshot for mobile interface
 
