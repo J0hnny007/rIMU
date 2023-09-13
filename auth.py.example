@@ -1,0 +1,5 @@
+username = "<YOUR_REDDIT_USERNAME_HERE>"
+password = "YOUR_REDDIT_PASSWORD_HERE"
+client_id = "YOUR_REDDIT_API_CLIENT_ID_HERE"
+client_secret = "YOUR_REDDIT_API_CLIENT_SECRET_HERE"
+key = "YOUR_GENERATED_SESSION_KEY_HERE"  # currently useless

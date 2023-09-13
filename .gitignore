@@ -1,0 +1,20 @@
+.env
+foo*
+*.pyc
+*__pycache__*
+src/configs/*
+src/temp/*
+
+venv/
+env/
+# ignores your cache file
+*.pkl
+*.pyc
+# currently useless
+manifest.json
+auth.py
+
+*.egg-info/
+*.egg
+dist/
+build/

@@ -1,0 +1,146 @@
+body {
+    background-color: #191919;
+    font-family: sans-serif;
+}
+
+datalist {
+  display: none;
+}
+
+.header {
+    background-color: #1c1c1c;
+    color: white;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align: left;
+    border-radius: 5px;
+    min-width: 300px;
+}
+
+.header > h1 {
+    font-family: Trispace, sans-serif;
+    text-decoration-line: underline;
+    font-size: 35px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.header > p {
+    font-size: 11px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.body {
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: white;
+    background-color: #1f1f1f;
+    border-radius: 5px;
+    -webkit-user-select: none;
+    user-select: none;
+    min-width: 300px;
+}
+
+.control-bar {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-item {
+
+}
+
+.search {
+    margin: 3px;
+}
+
+.status-bar {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.container {
+    /*display: flex;*/
+}
+
+.inbox {
+    max-width: 800px;
+}
+
+.message {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    /*min-width: 300px;*/
+}
+
+div.message:hover {
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 10%);
+    padding-top: 9px;
+    padding-bottom: 11px;
+}
+
+/*div.message:active {
+    box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 10%);
+    padding-top: 11px;
+    padding-bottom: 9px;
+}*/
+
+.msg-options {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    transform: scale(150%);
+}
+
+.title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.author {
+    font-size: 11px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.control {
+    display: grid;
+    grid-template-columns: auto auto;
+    padding-top: 10px;
+    margin-top: 3px;
+}
+
+#status {
+    justify-self: left;
+}
+
+.btn {
+    width: 60px;
+}
+
+.link-box {
+    justify-self: right;
+}
+
+.read {
+    background-color: #333333;
+}
+
+.unread {
+    background-color: midnightblue;
+}

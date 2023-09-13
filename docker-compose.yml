@@ -1,0 +1,6 @@
+version: '0.5'
+services:
+  rimu:
+    build: ./.
+    ports:
+      - "5000:5000"
