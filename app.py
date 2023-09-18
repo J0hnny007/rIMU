@@ -21,7 +21,7 @@ reddit = praw.Reddit(
   client_secret=auth.client_secret,
   username=auth.username,
   password=auth.password,
-  user_agent="privon-dev",
+  user_agent="rIMU v0.5 by J0hny007",
   ratelimit_seconds=300
 )
 
@@ -171,6 +171,9 @@ def extractUMBotMessages(cache):
 
 
 def fetchCache(file="./data/cache.pkl"):
+  if not os.path.isdir("./data"):
+    print("data folder missing, creating...")
+    os.mkdir("./data")
   if os.path.isfile(file):
     print("loading cache...")
     lc = load_cache()
