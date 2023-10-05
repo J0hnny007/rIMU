@@ -6,7 +6,8 @@ import gzip
 import os
 import re
 
-# rIMU, the reddit Inbox Management Utility for UpdateMeBot v0.5
+# rIMU, the reddit Inbox Management Utility for UpdateMeBot
+__version__ = "0.6"
 # A small webapp that lets you manage your inbox
 #
 # Developed by J0hny007
@@ -21,7 +22,7 @@ reddit = praw.Reddit(
   client_secret=auth.client_secret,
   username=auth.username,
   password=auth.password,
-  user_agent="rIMU v0.5 by J0hny007",
+  user_agent=("rIMU" + __version__ + "by J0hny007"),
   ratelimit_seconds=300
 )
 
@@ -78,11 +79,12 @@ def fetchStatus(cache, limit=None):
 
 
 # returns a list of message.ids for easier indexing and computing
-def getIdList(cache):
-  l_id_list = []
-  for msg_id in cache:
-    l_id_list.append(msg_id)
-  return l_id_list
+# moved to client
+# def getIdList(cache):
+#   l_id_list = []
+#   for msg_id in cache:
+#     l_id_list.append(msg_id)
+#   return l_id_list
 
 
 # fetches 50 new messages and merges the new ones with the cache dict and returns it
@@ -139,7 +141,7 @@ def extractTitle(message_body):
   return "None"
 
 
-# gets message_body as input and extracts the chapters author, title and link to the chapter (for reddit and Apollo)
+# gets message_body as input and extracts the chapters author, title and link to the chapter
 # they will be returned as strings inside a nested dict
 def extractBodyContent(message_body):
   author_pattern = r"u/[A-Za-z0-9_-]+"
@@ -147,26 +149,27 @@ def extractBodyContent(message_body):
   author = re.search(author_pattern, message_body).group()
   title = extractTitle(message_body)
   r_link = re.search(link_pattern, message_body).group()
-  a_link = r_link.replace("https", "apollo")
-  return dict(author=author, title=title, r_link=r_link, a_link=a_link)
+  return dict(author=author, title=title, r_link=r_link)
 
 
 # extracts the authors from the chapter object and returns a list of all authors
-def extractAuthors(l_chapters):
-  authors = []
-  for ch in l_chapters:
-    if not l_chapters[ch]["author"] in authors:
-      authors.append(l_chapters[ch]["author"])
-  return authors
+# moved to client
+# def extractAuthors(l_chapters):
+#   authors = []
+#   for ch in l_chapters:
+#     if not l_chapters[ch]["author"] in authors:
+#       authors.append(l_chapters[ch]["author"])
+#   return authors
 
 
 def extractUMBotMessages(cache):
-  body_content = {}
-  for c_msg in cache:
-    if cache[c_msg]["content"].author == "UpdateMeBot":
-      if re.search(r"(UpdateMeBot here!)", cache[c_msg]["content"].body):
-        body_content[c_msg] = extractBodyContent(cache[c_msg]["content"].body)
-        body_content[c_msg]["status"] = cache[c_msg]["status"]
+  body_content = []
+  for c_msg_id in cache:
+    if cache[c_msg_id]["content"].author == "UpdateMeBot":
+      if re.search(r"(UpdateMeBot here!)", cache[c_msg_id]["content"].body):
+        c_msg_id_dict = {c_msg_id: extractBodyContent(cache[c_msg_id]["content"].body)}
+        c_msg_id_dict[c_msg_id]["status"] = cache[c_msg_id]["status"]
+        body_content.append(c_msg_id_dict)
   return body_content
 
 
@@ -203,24 +206,18 @@ def inbox(request):
   if request == "reload":
     app.cache = appendNewMessages(app.cache)
   app.cache = fetchStatus(app.cache)
-  # full_id_list = getIdList(loaded_cache)
   loaded_chapters = extractUMBotMessages(app.cache)
-  id_list = getIdList(loaded_chapters)
-  loaded_authors = extractAuthors(loaded_chapters)
 
   package = {
-    "l_ch": loaded_chapters,
-    "r_stat": dict(read="Unread", unread="Read"),         # this is so stupid
-    "msg_id": id_list,
-    "msg_count": len(id_list),
-    "l_authors": loaded_authors}
+    "l_ch": loaded_chapters
+  }
 
-  json_data = json.dumps(package).encode("utf8")          # oh boy, 800KB raw for ~3K messages
-  zip_data = gzip.compress(json_data)                     # 100KB compressed... still yikes...
-  response = make_response(zip_data)                      # yeah, I need to optimize here...
+  json_data = json.dumps(package).encode("utf8")
+  zip_data = gzip.compress(json_data)
+  response = make_response(zip_data)
   response.headers['Content-Type'] = 'application/gzip'
   response.headers['Content-Encoding'] = 'gzip'
-  return response                                         # I think sending 100KB every response is a tad wasteful
+  return response                                         # got it down to 80KB via client side processing
 
 
 @app.route('/chapter/<string:chapter_id>/<string:action>')
@@ -231,4 +228,4 @@ def chapters(chapter_id, action):
 
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0')
+  app.run(host='0.0.0.0', port="8085")

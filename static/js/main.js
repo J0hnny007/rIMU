@@ -50,39 +50,59 @@ function filter() {
     calcReadUnreadRatio()
 }
 
+function getIdList(cache) {
+    let l_id_list = [];
+    for (let msg_id in cache) l_id_list.push(msg_id);
+    return l_id_list;
+}
+
+function extractAuthors(cache) {
+    let authors = [];
+    for (let ch in cache) if (!cache[ch].author in authors) authors.push(cache[ch].author);
+    return authors;
+}
+
 function genInbox(cache) {
     const env = mobileAndTabletCheck();
     const container = getElement("container");
     const inbox = document.createElement("div");
-    const msg_id = cache.msg_id, l_ch = cache.l_ch;
+    const l_ch = cache.l_ch;
+    console.log(l_ch)
+    // const msg_id = getIdList(l_ch);
     const r_stat = {"read": "Unread", "unread": "Read"}; // stupid... plz fix
     let view = ""
     inbox.id = "inbox"
     inbox.className = "inbox";
     container.append(inbox);
     if (env === "desktop") view = "hidden";
-    for (let id in msg_id) {
-    let msg_body = `
-    <div class="message `+l_ch[msg_id[id]].status+`" id="`+msg_id[id]+`">
-        <div class="title">`+l_ch[msg_id[id]].title+`</div>
-        <div class="msg-id" hidden>`+msg_id[id]+`</div>
-        <div class="author">`+l_ch[msg_id[id]].author+`</div>
-        <div class="control">
-        <button id="status" onclick="changeStatus(this.innerText.toLowerCase(), '`+msg_id[id]+`')" class="btn">`+r_stat[l_ch[msg_id[id]].status]+`</button>
-        <div class="link-box">
-            <input id="rlink" type="button" value="Open to Reddit" class="link" onclick="window.location.href='`+l_ch[msg_id[id]].r_link+`';">
-            <input id="alink" type="button" value="Open to Apollo" class="link" `+view+` onclick="window.location.href='`+l_ch[msg_id[id]].a_link+`';">
-        </div>
-        <div class="msg-options">...</div>
-  </div>
-    `;
-    inbox.insertAdjacentHTML("beforeend", msg_body);
+    for (let index in l_ch) {
+        let msg_content = l_ch[index];
+        let msg_id = Object.keys(l_ch[index])[0];
+        let msg_title = msg_content[msg_id].title;
+        let msg_status = msg_content[msg_id].status;
+        let msg_author = msg_content[msg_id].author;
+        let msg_link = msg_content[msg_id].r_link;
+        let msg_body = `    
+            <div class="message `+msg_status+`" id="`+msg_id+`">
+                <div class="title">`+msg_title+`</div>
+                <div class="msg-id" hidden>`+msg_id+`</div>
+                <div class="author">`+msg_author+`</div>
+                <div class="control">
+                <button id="status" onclick="changeStatus(this.innerText.toLowerCase(), '`+msg_id+`')" class="btn">`+r_stat[msg_status]+`</button>
+                <div class="link-box">
+                    <input id="rlink" type="button" value="Open to Reddit" class="link" onclick="window.location.href='`+msg_link+`';">
+                    <input id="alink" type="button" value="Open to Apollo" class="link" `+view+` onclick="window.location.href='`+msg_link.replace("https", "apollo")+`';">
+                </div>
+                <div class="msg-options">...</div>
+            </div>
+            `;
+        inbox.insertAdjacentHTML("beforeend", msg_body);
     }
 }
 
 function genAuthorFilter(cache) {
     const selector = getElement("authors");
-    const authors = cache.l_authors.sort((a, b) => a.localeCompare(b));
+    const authors = extractAuthors(cache).sort((a, b) => a.localeCompare(b));
     selector.innerHTML = "";
     for (let a in authors) {
         let option = "<option value='" + authors[a] + "'></option>";
