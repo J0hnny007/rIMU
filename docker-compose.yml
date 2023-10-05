@@ -1,6 +1,6 @@
-version: '0.5'
+version: '0.6'
 services:
   rimu:
     build: ./.
     ports:
-      - "5000:5000"
+      - "8085:8085"

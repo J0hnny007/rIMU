@@ -6,6 +6,6 @@ WORKDIR /opt/rIMU
 
 RUN pip install -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 8085
 
-CMD python app.py
+CMD gunicorn --bind 0.0.0.0:8085 wsgi:app
