@@ -164,7 +164,7 @@ def extractBodyContent(message_body):
 
 def extractUMBotMessages(cache):
   body_content = []
-  for c_msg_id in cache:
+  for c_msg_id in reversed(cache):
     if cache[c_msg_id]["content"].author == "UpdateMeBot":
       if re.search(r"(UpdateMeBot here!)", cache[c_msg_id]["content"].body):
         c_msg_id_dict = {c_msg_id: extractBodyContent(cache[c_msg_id]["content"].body)}

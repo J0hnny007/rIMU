@@ -50,15 +50,13 @@ function filter() {
     calcReadUnreadRatio()
 }
 
-function getIdList(cache) {
-    let l_id_list = [];
-    for (let msg_id in cache) l_id_list.push(msg_id);
-    return l_id_list;
-}
-
 function extractAuthors(cache) {
     let authors = [];
-    for (let ch in cache) if (!cache[ch].author in authors) authors.push(cache[ch].author);
+    const l_ch = cache.l_ch;
+    for (let index in l_ch) {
+        let author = l_ch[index][Object.keys(l_ch[index])[0]].author;
+        if (!(authors.includes(author))) authors.push(author);
+    }
     return authors;
 }
 
@@ -67,8 +65,6 @@ function genInbox(cache) {
     const container = getElement("container");
     const inbox = document.createElement("div");
     const l_ch = cache.l_ch;
-    console.log(l_ch)
-    // const msg_id = getIdList(l_ch);
     const r_stat = {"read": "Unread", "unread": "Read"}; // stupid... plz fix
     let view = ""
     inbox.id = "inbox"
@@ -96,7 +92,7 @@ function genInbox(cache) {
                 <div class="msg-options">...</div>
             </div>
             `;
-        inbox.insertAdjacentHTML("beforeend", msg_body);
+        inbox.insertAdjacentHTML("afterbegin", msg_body);
     }
 }
 
@@ -148,9 +144,9 @@ function getInbox(dest) {
         const container = getElement("container")
         if (getElement("inbox")) container.removeChild(getElement("inbox"));
         genInbox(myJson);
-        genAuthorFilter(myJson)
-        filter()
-        enable(dest)
+        genAuthorFilter(myJson);
+        filter();
+        enable(dest);
     }).catch((error) => {
     	console.log(error)
     });
