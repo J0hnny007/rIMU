@@ -22,7 +22,7 @@ reddit = praw.Reddit(
   client_secret=auth.client_secret,
   username=auth.username,
   password=auth.password,
-  user_agent=("rIMU" + __version__ + "by J0hny007"),
+  user_agent=("rIMU" + __version__ + " by J0hny007"),
   ratelimit_seconds=300
 )
 
