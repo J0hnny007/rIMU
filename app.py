@@ -10,7 +10,7 @@ import re
 __version__ = "0.6"
 # A small webapp that lets you manage your inbox
 #
-# Developed by J0hny007
+# Developed by J0hnny007
 #
 # TODO: - Make this app a module
 #       - Optimize the fetchInbox() function
@@ -22,7 +22,7 @@ reddit = praw.Reddit(
   client_secret=auth.client_secret,
   username=auth.username,
   password=auth.password,
-  user_agent=("rIMU" + __version__ + " by J0hny007"),
+  user_agent=("rIMU" + __version__ + " by J0hnny007"),
   ratelimit_seconds=300
 )
 
