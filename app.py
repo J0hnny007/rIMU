@@ -87,7 +87,7 @@ def fetchStatus(cache, limit=None):
 #   return l_id_list
 
 
-# fetches 50 new messages and merges the new ones with the cache dict and returns it
+# fetches 25 new messages and merges the new ones with the cache dict and returns it
 def appendNewMessages(cache):
   print("fetching new messages")
   new_msg = fetchInbox(limit=25)
