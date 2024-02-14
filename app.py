@@ -123,7 +123,7 @@ def extractTitle(message_body):
 
   # new format
   if title := re.search(new_title_pattern, message_body):
-    return title.group()
+    return title.group().replace("\[", "[").replace("\]", "]")
   # old format
   if (title := re.search(old_title_pattern, message_body)) and (title.group() != "Click here"):
     return title.group()
