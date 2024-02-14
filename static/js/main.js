@@ -90,6 +90,7 @@ function genInbox(cache) {
                     <input id="alink" type="button" value="Open to Apollo" class="link" `+view+` onclick="window.location.href='`+msg_link.replace("https", "apollo")+`';">
                 </div>
                 <div class="msg-options">...</div>
+                </div>
             </div>
             `;
         inbox.insertAdjacentHTML("afterbegin", msg_body);
